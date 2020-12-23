@@ -1,0 +1,26 @@
+version: '3'
+
+services:
+  rails:
+    container_name: trustring_backend_rails
+    volumes:
+      - ./:/app
+      - trustring_backend_rails_bundle:/usr/local/bundle
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      RAILS_ENV: 'development'
+    ports:
+      - 4000:3000
+    command: >
+      bash -c "
+      rm -f /app/tmp/pids/server.pid &&
+      bundle install -j4 &&
+      bundle exec rails s -p 3000 -b '0.0.0.0'"
+    tty: true
+    stdin_open: true
+
+volumes:
+  trustring_backend_rails_bundle:
+    driver: local
